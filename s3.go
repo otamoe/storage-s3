@@ -1,4 +1,4 @@
-package model
+package s3
 
 import (
 	"context"
