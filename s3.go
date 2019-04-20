@@ -197,7 +197,7 @@ func (s *S3) Upload(ctx context.Context) (writer *io.PipeWriter, url chan string
 	return
 }
 
-func (s *S3) Get(ctx context.Context, start, end int64) (reader io.ReadCloser, err error) {
+func (s *S3) Get(ctx context.Context, start, end int64) (result *s3.GetObjectOutput, reader io.ReadCloser, err error) {
 	svc := s3.New(s.Session())
 	input := &s3.GetObjectInput{
 		Bucket: aws.String(s.Config.Bucket),
@@ -211,7 +211,6 @@ func (s *S3) Get(ctx context.Context, start, end int64) (reader io.ReadCloser, e
 		input.Range = aws.String(val)
 	}
 
-	var result *s3.GetObjectOutput
 	result, err = svc.GetObjectWithContext(ctx, input)
 
 	var resultString string
